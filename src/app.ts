@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import { swaggerOptions } from "./swaggerImplementation";
+import responseBuilder from "./utils/responseBuilder";
 
 dotenv.config();
 connectDB();
@@ -21,5 +22,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+
+app.use((req, res, next) => {
+  responseBuilder(res, { message: "Not Found" }, null, `Not Found - ${req.originalUrl}`, 404);
+});
 
 export default app;
